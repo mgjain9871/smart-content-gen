@@ -9,6 +9,4 @@ import org.springframework.stereotype.Component;
 @Setter
 public class ApplicationConstants {
 
-    public static final String SECRET_KEY = "123";
-
 }

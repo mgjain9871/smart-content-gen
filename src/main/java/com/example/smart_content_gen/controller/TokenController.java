@@ -15,8 +15,4 @@ public class TokenController {
         return (CsrfToken) request.getAttribute("_csrf");
     }
 
-    @GetMapping("/about")
-    public String about(){
-        return "http://";
-    }
 }

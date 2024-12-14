@@ -17,8 +17,6 @@ public class ContentService {
 
     private ContentRepository contentRepository;
     private OpenAIFacade restFacade;
-//    @Autowired
-//    private QuizGenerationService quizGenerationService;
 
     private Tika tika = new Tika();
 
@@ -39,9 +37,6 @@ public class ContentService {
 
         String extractedText = tika.parseToString(file.getInputStream());
         content.setExtractedText(extractedText);
-
-//        String quiz = quizGenerationService.generateQuiz(extractedText);
-//        System.out.println("Generated Quiz: " + quiz);
 
         return contentRepository.save(content);
     }

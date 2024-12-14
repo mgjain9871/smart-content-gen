@@ -18,9 +18,6 @@ public class ContentController {
     @Autowired
     private ContentService contentService;
 
-//    @Autowired
-//    private QuizGenerationService quizGenerationService;
-
     @PostMapping("/upload")
     public ResponseEntity<Content> uploadContent(@RequestParam("file") MultipartFile file, @RequestParam("title")String title, @RequestParam("uploadedBy")String uploadedBy) throws TikaException, IOException {
 
@@ -53,8 +50,6 @@ public class ContentController {
     @GetMapping("/{id}/summary")
     public ResponseEntity<String> generateSummary(@PathVariable Long id) {
         String extractedText = contentService.getContentById(id).getExtractedText();
-//        String extractedText = "A short paragraph is about 100-200 words and focuses on one main topic that is very specific. A short paragraph has supporting details about the main idea and concludes in a way that further promotes the main idea. On the other hand, a long paragraph can be a specific topic or a broad one.";
-        System.out.println("extracted text = " + extractedText);
         String summary = contentService.generateSummary(extractedText);
         return ResponseEntity.ok(summary);
     }

@@ -15,9 +15,8 @@ import org.springframework.web.client.RestTemplate;
 public class OpenAIFacadeImpl implements OpenAIFacade{
 
     private GenerateContentMapper generateContentMapper;
-//    private RestTemplate restTemplate ;
 
-    public static final Dotenv dotenv = Dotenv.load(); // Load the .env file
+    public static final Dotenv dotenv = Dotenv.load();
     public static final String apiKey = dotenv.get("API_KEY");
     public static  String apiUrl = dotenv.get("BASE_URL");
 
@@ -33,26 +32,7 @@ public class OpenAIFacadeImpl implements OpenAIFacade{
         RestTemplate restTemplate = new RestTemplate();
         String urlWithKey = apiUrl + "?key=" + apiKey;
         ResponseEntity<String> response = restTemplate.postForEntity(urlWithKey, entity, String.class);
-//        GenerateContentResponse response = callGenerateContent(urlWithKey, ApplicationUtil.createRequest(generateContentRequest, headers),GenerateContentResponse.class);
-//        return generateContentMapper.mapGenerateContentResponse(response);
         return response.getBody();
     }
-
-//    public GenerateContentResponse callGenerateContent(String url, HttpEntity<Object> createRequest, Class<GenerateContentResponse> responseClass){
-//
-//        GenerateContentResponse response = null;
-//
-//        try {
-//            response = restTemplate.postForObject(url, createRequest, responseClass);
-//        }
-//        catch (HttpStatusCodeException e){
-//            throw new RuntimeException("HTTP error: " + e.getStatusCode());
-//        }
-//        catch (Exception e){
-//            throw new RuntimeException("Error calling API: " + e.getMessage());
-//        }
-//
-//        return response;
-//    }
 
 }
