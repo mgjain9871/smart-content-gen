@@ -6,6 +6,7 @@ import com.example.smart_content_gen.dto.Part;
 import com.example.smart_content_gen.models.GenerateContentRequest;
 import com.example.smart_content_gen.models.GenerateContentResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

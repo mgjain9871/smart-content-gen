@@ -2,7 +2,10 @@ package com.example.smart_content_gen.service;
 
 import com.example.smart_content_gen.facade.OpenAIFacade;
 import com.example.smart_content_gen.models.Content;
+import com.example.smart_content_gen.models.GenerateContentResponse;
+import com.example.smart_content_gen.models.GeneratedContent;
 import com.example.smart_content_gen.repositories.ContentRepository;
+import com.example.smart_content_gen.repositories.GeneratedContentRepository;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
@@ -17,6 +20,7 @@ public class ContentService {
 
     private ContentRepository contentRepository;
     private OpenAIFacade restFacade;
+    private GeneratedContentRepository generatedContentRepository;
 
     private Tika tika = new Tika();
 
@@ -24,9 +28,11 @@ public class ContentService {
         Dotenv dotenv = Dotenv.load(); // Load .env file
     }
 
-    public ContentService(ContentRepository contentRepository, OpenAIFacade restFacade) {
+    public ContentService(ContentRepository contentRepository, OpenAIFacade restFacade, GeneratedContentRepository generatedContentRepository) {
         this.contentRepository = contentRepository;
         this.restFacade = restFacade;
+        this.generatedContentRepository = generatedContentRepository;
+
     }
 
     public Content saveContent(MultipartFile file, String title, String uploadedBy) throws IOException, TikaException {
@@ -51,8 +57,17 @@ public class ContentService {
         return restFacade.generateCompletion(prompt);
     }
 
-    public String generateSummary(String extractedText) {
+    public String generateSummary(String extractedText, Long contentId) {
         String prompt = "Summarize the following text:\n\n" + extractedText;
-        return restFacade.generateCompletion(prompt);
+        String text =  restFacade.generateCompletion(prompt);
+
+        GeneratedContent generatedContent = new GeneratedContent();
+        generatedContent.setContentId(contentId);
+        generatedContent.setType("summary");
+        generatedContent.setGeneratedText(text);
+
+        generatedContentRepository.save(generatedContent);
+
+        return text;
     }
 }

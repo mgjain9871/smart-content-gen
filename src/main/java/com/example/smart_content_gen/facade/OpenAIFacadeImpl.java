@@ -2,6 +2,7 @@ package com.example.smart_content_gen.facade;
 
 import com.example.smart_content_gen.mapper.GenerateContentMapper;
 import com.example.smart_content_gen.models.GenerateContentRequest;
+import com.example.smart_content_gen.models.GenerateContentResponse;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -27,12 +28,13 @@ public class OpenAIFacadeImpl implements OpenAIFacade{
 
         GenerateContentRequest generateContentRequest = generateContentMapper.mapOpenAIReqBody(prompt);
 
-        HttpEntity<GenerateContentRequest> entity = new HttpEntity<>(generateContentRequest, headers);
+        HttpEntity<Object> entity = new HttpEntity<>(generateContentRequest, headers);
 
         RestTemplate restTemplate = new RestTemplate();
         String urlWithKey = apiUrl + "?key=" + apiKey;
-        ResponseEntity<String> response = restTemplate.postForEntity(urlWithKey, entity, String.class);
-        return response.getBody();
+        GenerateContentResponse response = restTemplate.postForObject(urlWithKey, entity, GenerateContentResponse.class);
+        return generateContentMapper.mapGenerateContentResponse(response);
+//        return response;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.smart_content_gen.controller;
 
 import com.example.smart_content_gen.models.Content;
+import com.example.smart_content_gen.models.GenerateContentResponse;
 import com.example.smart_content_gen.service.ContentService;
 import org.apache.tika.exception.TikaException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class ContentController {
     @GetMapping("/{id}/summary")
     public ResponseEntity<String> generateSummary(@PathVariable Long id) {
         String extractedText = contentService.getContentById(id).getExtractedText();
-        String summary = contentService.generateSummary(extractedText);
+        String summary = contentService.generateSummary(extractedText, id);
         return ResponseEntity.ok(summary);
     }
 }
