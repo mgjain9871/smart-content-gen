@@ -21,6 +21,7 @@ public class ContentService {
     private ContentRepository contentRepository;
     private OpenAIFacade restFacade;
     private GeneratedContentRepository generatedContentRepository;
+    private QuizParserService quizParserService;
 
     private Tika tika = new Tika();
 
@@ -28,10 +29,11 @@ public class ContentService {
         Dotenv dotenv = Dotenv.load(); // Load .env file
     }
 
-    public ContentService(ContentRepository contentRepository, OpenAIFacade restFacade, GeneratedContentRepository generatedContentRepository) {
+    public ContentService(ContentRepository contentRepository, OpenAIFacade restFacade, GeneratedContentRepository generatedContentRepository, QuizParserService quizParserService) {
         this.contentRepository = contentRepository;
         this.restFacade = restFacade;
         this.generatedContentRepository = generatedContentRepository;
+        this.quizParserService = quizParserService;
 
     }
 
@@ -54,8 +56,14 @@ public class ContentService {
 
     public String generateQuiz(String extractedText) {
         String prompt = "Create 5 quiz questions (with answers) based on the following text:\n\n" + extractedText;
-        return restFacade.generateCompletion(prompt);
+        String text = restFacade.generateCompletion(prompt);
+
+        quizParserService.parseQuizResponse(text);
+
+        return text;
     }
+
+
 
     public String generateSummary(String extractedText, Long contentId) {
         String prompt = "Summarize the following text:\n\n" + extractedText;
