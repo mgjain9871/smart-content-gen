@@ -52,7 +52,6 @@ This project is an **AI-powered adaptive learning platform** designed to enhance
 1. Clone the repository:
    ```sh
    git clone https://github.com/yourusername/ai-learning-platform.git
-   cd ai-learning-platform
    ```
 2. Set up environment variables:
    - Create a `.env` file in the root directory and add environment variables.
